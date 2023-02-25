@@ -1,0 +1,5 @@
+"0","print(""Best: %f using %s"" % (grid_result.best_score_, grid_result.best_params_)) 
+"
+"1","Best: -0.001155 using {'learning_rate': 0.3}
+"
+"0",""

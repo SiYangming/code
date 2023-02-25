@@ -1,0 +1,15 @@
+"0","# plot"
+"0","pyplot.errorbar(subsample, means, yerr=stds)"
+"1","<ErrorbarContainer object of 3 artists>
+"
+"0","pyplot.title(""XGBoost subsample vs Log Loss"")"
+"1","Text(0.5, 1.0, 'XGBoost subsample vs Log Loss')
+"
+"0","pyplot.xlabel('subsample')"
+"1","Text(0.5, 23.52222222222222, 'subsample')
+"
+"0","pyplot.ylabel('Log Loss')"
+"1","Text(30.972222222222214, 0.5, 'Log Loss')
+"
+"0","pyplot.savefig('subsample.png')"
+"0",""

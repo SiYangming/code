@@ -1,0 +1,16 @@
+"0","means = grid_result.cv_results_['mean_test_score']"
+"0","stds = grid_result.cv_results_['std_test_score']"
+"0","params = grid_result.cv_results_['params']"
+"0","for mean, stdev, param in zip(means, stds, params):"
+"0","    print(""%f (%f) with: %r"" % (mean, stdev, param))"
+"0",""
+"1","-0.000905 (0.000187) with: {'subsample': 0.1}
+-0.000493 (0.000137) with: {'subsample': 0.2}
+-0.000504 (0.000281) with: {'subsample': 0.3}
+-0.000492 (0.000363) with: {'subsample': 0.4}
+-0.000515 (0.000434) with: {'subsample': 0.5}
+-0.000588 (0.000517) with: {'subsample': 0.6}
+-0.000726 (0.000616) with: {'subsample': 0.7}
+-0.000862 (0.000745) with: {'subsample': 0.8}
+-0.001155 (0.001053) with: {'subsample': 1.0}
+"

@@ -1,0 +1,58 @@
+---
+title: "Pima Indians Diabetes 糖尿病数据集"
+output: html_notebook
+---
+
+# 数据集
+
+数据集下载地址：https://goo.gl/bDdBiA)
+
+https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.data.csv
+
+# 加载和准备数据
+
+```{python}
+# First XGBoost model for Pima Indians dataset
+from numpy import loadtxt
+from xgboost import XGBClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+```
+
+```{python}
+# load data
+dataset = loadtxt('https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.data.csv', delimiter=",")
+```
+
+# 训练集和测试集，拟合模型
+
+```{python}
+# split data into X and y
+X = dataset[:,0:8]
+Y = dataset[:,8]
+# split data into train and test sets
+seed = 7
+test_size = 0.33
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=test_size,
+	random_state=seed)
+# fit model on training data
+model = XGBClassifier()
+model.fit(X_train, y_train)
+```
+
+# 查看模型
+
+```{python}
+print(model)
+```
+
+# 测试集运行和模型评估
+
+```{python}
+# make predictions for test data
+predictions = model.predict(X_test)
+# evaluate predictions
+accuracy = accuracy_score(y_test, predictions)
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
+```
+

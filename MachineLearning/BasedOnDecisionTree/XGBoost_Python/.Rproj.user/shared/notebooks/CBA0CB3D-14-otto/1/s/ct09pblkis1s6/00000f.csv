@@ -1,0 +1,15 @@
+"0","# plot"
+"0","pyplot.errorbar(max_depth, means, yerr=stds)"
+"1","<ErrorbarContainer object of 3 artists>
+"
+"0","pyplot.title(""XGBoost max_depth vs Log Loss"")"
+"1","Text(0.5, 1.0, 'XGBoost max_depth vs Log Loss')
+"
+"0","pyplot.xlabel('max_depth')"
+"1","Text(0.5, 23.52222222222222, 'max_depth')
+"
+"0","pyplot.ylabel('Log Loss')"
+"1","Text(4.347222222222216, 0.5, 'Log Loss')
+"
+"0","pyplot.savefig('max_depth.png')"
+"0",""

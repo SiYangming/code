@@ -1,0 +1,24 @@
+---
+title: "pima-indians-diabetes"
+output: html_notebook
+---
+
+```{python}
+# plot decision tree
+# 绘制决策树
+from numpy import loadtxt  
+from xgboost import XGBClassifier  
+from xgboost import plot_tree  
+from matplotlib import pyplot  
+# load data  
+dataset = loadtxt('https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.data.csv', delimiter=",") # split data into X and y  
+X = dataset[:,0:8]  
+y = dataset[:,8]  
+# fit model on training data  
+model = XGBClassifier()  
+model.fit(X, y)  
+# plot single tree
+plot_tree(model)
+pyplot.show()
+```
+

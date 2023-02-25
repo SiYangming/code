@@ -1,0 +1,15 @@
+"0","# plot"
+"0","pyplot.errorbar(n_estimators, means, yerr=stds) "
+"1","<ErrorbarContainer object of 3 artists>
+"
+"0","pyplot.title(""XGBoost n_estimators vs Log Loss"")"
+"1","Text(0.5, 1.0, 'XGBoost n_estimators vs Log Loss')
+"
+"0","pyplot.xlabel('n_estimators')  "
+"1","Text(0.5, 0, 'n_estimators')
+"
+"0","pyplot.ylabel('Log Loss') "
+"1","Text(0, 0.5, 'Log Loss')
+"
+"0","pyplot.savefig('n_estimators.png')"
+"0",""
