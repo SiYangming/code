@@ -1,0 +1,306 @@
+---
+title: "Pima Indians Diabetes 糖尿病数据"
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    theme: united
+---
+
+# 1.数据集
+
+数据集下载地址：<https://goo.gl/bDdBiA>)
+
+<https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.data.csv>
+
+# 2.加载和准备数据
+
+```{python}
+# First XGBoost model for Pima Indians dataset
+from numpy import loadtxt
+from xgboost import XGBClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+```
+
+```{python}
+# load data
+dataset = loadtxt('https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.data.csv', delimiter=",")
+```
+
+# 3.切分训练集和测试集验证，拟合模型
+
+```{python}
+# train-test split evaluation of xgboost model
+# split data into X and y
+X = dataset[:,0:8]
+Y = dataset[:,8]
+# split data into train and test sets
+seed = 7
+test_size = 0.33
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=test_size,
+	random_state=seed)
+# fit model on all training data
+model = XGBClassifier()
+model.fit(X_train, y_train)
+```
+
+## 3.1.查看模型
+
+```{python}
+print(model)
+```
+
+## 3.2.测试集运行和模型评估
+
+```{python}
+# make predictions for test data
+predictions = model.predict(X_test)
+# evaluate predictions
+accuracy = accuracy_score(y_test, predictions)
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
+```
+
+# 4.K-Fold交叉验证
+
+```{python}
+# k-fold cross validation evaluation of xgboost model
+from numpy import loadtxt  
+from xgboost import XGBClassifier  
+from sklearn.model_selection import KFold  
+from sklearn.model_selection import cross_val_score
+```
+
+```{python}
+# CV model
+model = XGBClassifier() 
+kfold = KFold(n_splits=10, shuffle=True)
+results = cross_val_score(model, X, Y, cv=kfold)  
+print("Accuracy: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
+```
+
+# 5.不平衡数据
+
+```{python}
+# stratified k-fold cross validation evaluation of xgboost model
+from numpy import loadtxt  
+from xgboost import XGBClassifier  
+from sklearn.model_selection import StratifiedKFold  
+from sklearn.model_selection import cross_val_score  
+```
+
+```{python}
+# CV model
+model = XGBClassifier() 
+kfold = StratifiedKFold(n_splits=10)  
+results = cross_val_score(model, X, Y, cv=kfold)  
+print("Accuracy: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
+```
+
+# 6.绘制决策树
+
+```{python}
+# plot decision tree
+# 绘制决策树
+from numpy import loadtxt  
+from xgboost import XGBClassifier  
+from xgboost import plot_tree  
+from matplotlib import pyplot  
+```
+
+```{python}
+# fit model on training data  
+model = XGBClassifier()  
+model.fit(X, Y)  
+```
+
+```{python}
+# plot single tree
+plot_tree(model)
+pyplot.show()
+```
+
+# 7.保存模型
+
+## 7.1.pickle保存模型
+
+```{python}
+# Train XGBoost model, save to file using pickle, load and make predictions
+import pickle  
+# save model to file
+pickle.dump(model, open("pima.pickle.dat", "wb"))
+print("Saved model to: pima.pickle.dat")
+
+# some time later...
+```
+
+## 7.2.pickle加载模型
+
+```{python}
+# load model from file
+loaded_model = pickle.load(open("pima.pickle.dat", "rb"))
+print("Loaded model from: pima.pickle.dat")
+# make predictions for test data
+predictions = loaded_model.predict(X_test)
+# evaluate predictions
+accuracy = accuracy_score(y_test, predictions)
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
+```
+
+##7.3.Joblib保存模型
+
+```{python}
+# Train XGBoost model, save to file using joblib, load and make predictions
+# from sklearn.externals import joblib  
+import joblib
+# save model to file
+joblib.dump(model, "pima.joblib.dat")
+print("Saved model to: pima.joblib.dat")
+
+# some time later...
+```
+
+## 7.4.Joblib加载模型
+
+```{python}
+# load model from file
+loaded_model = joblib.load("pima.joblib.dat")
+print("Loaded model from: pima.joblib.dat")
+# make predictions for test data
+predictions = loaded_model.predict(X_test)
+# evaluate predictions
+accuracy = accuracy_score(y_test, predictions)
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
+```
+
+# 8.特征重要性
+
+```{python}
+# plot feature importance manually
+from matplotlib import pyplot  
+```
+
+## 8.1.打印特征重要性打分
+
+```{python}
+# feature importance  
+print(model.feature_importances_)  
+```
+
+## 8.2.绘制特征柱状图
+
+```{python}
+pyplot.clf() # 清图。
+# cla() # 清坐标轴。
+# close() # 关窗口
+# plot  
+pyplot.bar(range(len(model.feature_importances_)), model.feature_importances_) 
+pyplot.show()
+```
+
+## 8.3.使用xgboost包的函数绘制
+
+```{python}
+# plot feature importance using built-in function
+from xgboost import plot_importance
+from matplotlib import pyplot  
+```
+
+```{python}
+# plot feature importance  
+plot_importance(model)  
+pyplot.show()
+```
+
+## 8.4.使用特征重要性指标来选择特征
+
+```{python}
+# use feature importance for feature selection
+from numpy import sort  
+from sklearn.feature_selection import SelectFromModel
+```
+
+```{python}
+# make predictions for test data and evaluate  
+predictions = model.predict(X_test)  
+accuracy = accuracy_score(y_test, predictions)  
+print("Accuracy: %.2f%%" % (accuracy * 100.0))  
+```
+
+```{python}
+# Fit model using each importance as a threshold
+thresholds = sort(model.feature_importances_)
+for thresh in thresholds:
+  # select features using threshold
+  selection = SelectFromModel(model, threshold=thresh, prefit=True)
+  select_X_train = selection.transform(X_train)  
+  # train model  
+  selection_model = XGBClassifier()
+  selection_model.fit(select_X_train, y_train)
+  # eval model
+  select_X_test = selection.transform(X_test)
+  predictions = selection_model.predict(select_X_test)
+  accuracy = accuracy_score(y_test, predictions)  
+  print("Thresh=%.3f, n=%d, Accuracy: %.2f%%" % (thresh, select_X_train.shape[1], accuracy*100.0))
+```
+
+# 9.模型评估和提前终止迭代
+
+```{python}
+# monitor training performance
+eval_set = [(X_test, y_test)]  
+early_stopping_rounds=10
+eval_metric=["error", "logloss"]
+model = XGBClassifier(eval_metric=eval_metric, early_stopping_rounds=early_stopping_rounds)
+model.fit(X_train, y_train, 
+eval_set=eval_set, verbose=True) 
+```
+
+```{python}
+# make predictions for test data  
+predictions = model.predict(X_test)  
+# evaluate predictions  
+accuracy = accuracy_score(y_test, predictions)  
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
+```
+
+```{python}
+eval_set = [(X_train, y_train), (X_test, y_test)]
+early_stopping_rounds=10
+eval_metric=["error", "logloss"]
+model = XGBClassifier(eval_metric=eval_metric, early_stopping_rounds=early_stopping_rounds)
+model.fit(X_train, y_train, eval_set=eval_set, verbose=True) 
+```
+
+```{python}
+# retrieve performance metrics
+results = model.evals_result()
+epochs = len(results['validation_0']['error']) 
+x_axis = range(0, epochs)
+```
+
+## 9.1.绘制error误差图
+
+```{python}
+# plot log loss  
+fig, ax = pyplot.subplots()
+ax.plot(x_axis, results['validation_0']['error'], label='Train')
+ax.plot(x_axis, results['validation_1']['error'], label='Test')
+ax.legend()  
+pyplot.ylabel('Classification Error')
+pyplot.title('XGBoost Classification Error')  
+pyplot.show() 
+```
+
+## 9.2.绘制logloss误差图
+
+```{python}
+# plot log loss  
+fig, ax = pyplot.subplots()
+ax.plot(x_axis, results['validation_0']['logloss'], label='Train')
+ax.plot(x_axis, results['validation_1']['logloss'], label='Test')
+ax.legend()  
+pyplot.ylabel('Log Loss')
+pyplot.title('XGBoost Log Loss')  
+pyplot.show() 
+```

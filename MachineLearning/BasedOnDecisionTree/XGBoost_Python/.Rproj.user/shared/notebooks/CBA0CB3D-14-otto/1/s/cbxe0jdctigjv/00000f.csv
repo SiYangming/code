@@ -1,6 +1,0 @@
-"0","# summarize results  
-print(""Best: %f using %s"" % (grid_result.best_score_, grid_result.best_params_))
-"
-"1","Best: -0.001155 using {'n_estimators': 100}
-"
-"0",""
